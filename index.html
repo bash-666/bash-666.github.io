@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bitácora</title>
+<style>
+  :root{
+    --bg:#0b0b0b;
+    --cobalt:#0050EF;
+    --teal:#00ABA9;
+    --orange:#FA6800;
+    --violet:#6A00FF;
+    --magenta:#D80073;
+    --steel:#647687;
+    --crimson:#A20025;
+    --green:#60A917;
+    --ink:#F2F2F2;
+    --gap:4px;
+    --unit:168px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    height:100%;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    overflow-x:hidden;
+  }
+
+  body{
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 34px);
+  }
+
+  ::selection{ background:var(--cobalt); color:#fff; }
+
+  /* ---------------- header ---------------- */
+  header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    padding:36px 28px 18px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .wordmark{
+    font-weight:100;
+    font-size:clamp(2.2rem, 6vw, 3.2rem);
+    letter-spacing:-0.01em;
+    line-height:1;
+  }
+  .wordmark b{ font-weight:600; }
+
+  .clock{
+    text-align:right;
+  }
+  .clock .time{
+    font-weight:200;
+    font-size:2.1rem;
+    line-height:1;
+  }
+  .clock .date{
+    font-weight:400;
+    font-size:0.8rem;
+    color:#9aa0a6;
+    text-transform:capitalize;
+    margin-top:4px;
+  }
+
+  /* ---------------- tile grid ---------------- */
+  main{
+    padding:8px 24px 60px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .grid{
+    display:grid;
+    grid-auto-flow:column dense;
+    grid-auto-columns:var(--unit);
+    grid-template-rows:repeat(2, var(--unit));
+    gap:var(--gap);
+    width:max-content;
+  }
+
+  a.tile{
+    position:relative;
+    display:block;
+    text-decoration:none;
+    color:#fff;
+    overflow:hidden;
+    perspective:600px;
+    outline-offset:2px;
+  }
+  a.tile:focus-visible{ outline:2px solid #fff; }
+
+  .tile .face{
+    position:absolute;
+    inset:0;
+    padding:12px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    backface-visibility:hidden;
+    transition:transform .6s cubic-bezier(.4,0,.2,1);
+  }
+  .tile .face.front{ transform:rotateY(0deg); }
+  .tile .face.back{
+    transform:rotateY(180deg);
+    justify-content:center;
+  }
+  .tile.flip:hover .face.front,
+  .tile.flip:focus-visible .face.front{ transform:rotateY(-180deg); }
+  .tile.flip:hover .face.back,
+  .tile.flip:focus-visible .face.back{ transform:rotateY(0deg); }
+
+  .tile:active .face.front,
+  .tile:active .face.back{
+    filter:brightness(0.82);
+    transform:scale(0.96) rotateY(var(--ry, 0deg));
+  }
+
+  .tile svg{
+    width:30px; height:30px;
+    stroke:#fff;
+    stroke-width:1.6;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    opacity:0.95;
+  }
+
+  .tile .label{
+    font-weight:600;
+    font-size:0.98rem;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    line-height:1.15;
+  }
+  .tile .sub{
+    font-size:0.72rem;
+    font-weight:400;
+    color:rgba(255,255,255,0.85);
+    margin-top:6px;
+  }
+
+  .tile--hero .label{ font-size:1.6rem; font-weight:200; text-transform:none; }
+  .tile--hero .brand{ font-weight:600; }
+
+  /* spans */
+  .s1x1{ grid-column:span 1; grid-row:span 1; }
+  .s2x1{ grid-column:span 2; grid-row:span 1; }
+  .s2x2{ grid-column:span 2; grid-row:span 2; }
+
+  .bg-cobalt{ background:var(--cobalt); }
+  .bg-teal{ background:var(--teal); }
+  .bg-orange{ background:var(--orange); }
+  .bg-violet{ background:var(--violet); }
+  .bg-magenta{ background:var(--magenta); }
+  .bg-steel{ background:var(--steel); }
+  .bg-crimson{ background:var(--crimson); }
+  .bg-green{ background:var(--green); }
+
+  footer{
+    padding:0 28px 40px;
+    font-size:0.75rem;
+    color:#6b7075;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .tile .face{ transition:none; }
+  }
+
+  @media (max-width:560px){
+    :root{ --unit:150px; }
+    header{ padding:26px 18px 14px; }
+    main{ padding:8px 14px 50px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">bit<b>á</b>cora</div>
+  <div class="clock">
+    <div class="time" id="clock-time">--:--</div>
+    <div class="date" id="clock-date">—</div>
+  </div>
+</header>
+
+<main>
+  <div class="grid">
+
+    <a href="#" class="tile tile--hero s2x2 bg-cobalt" aria-label="bitácora — hallazgos y mods de hardware">
+      <div class="face front">
+        <span></span>
+        <div>
+          <div class="label">hallazgos y mods<br>de hardware</div>
+          <div class="sub">actualizada a mano</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="tile flip s1x1 bg-teal" aria-label="Hallazgos">
+      <div class="face front">
+        <svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+        <div class="label">Hallazgos</div>
+      </div>
+      <div class="face back">
+        <div class="sub">Toca para ver lo más reciente</div>
+      </div>
+    </a>
+
+    <a href="#" class="tile flip s1x1 bg-orange" aria-label="Mods">
+      <div class="face front">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2-2z"/></svg>
+        <div class="label">Mods</div>
+      </div>
+      <div class="face back">
+        <div class="sub">Próximamente</div>
+      </div>
+    </a>
+
+    <a href="#" class="tile s2x1 bg-violet" aria-label="Firmware">
+      <div class="face front">
+        <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1"/><line x1="9" y1="2" x2="9" y2="6"/><line x1="15" y1="2" x2="15" y2="6"/><line x1="9" y1="18" x2="9" y2="22"/><line x1="15" y1="18" x2="15" y2="22"/><line x1="2" y1="9" x2="6" y2="9"/><line x1="2" y1="15" x2="6" y2="15"/><line x1="18" y1="9" x2="22" y2="9"/><line x1="18" y1="15" x2="22" y2="15"/></svg>
+        <div class="label">Firmware</div>
+      </div>
+    </a>
+
+    <a href="#" class="tile s1x1 bg-magenta" aria-label="Audio">
+      <div class="face front">
+        <svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2" y="14" width="5" height="7" rx="1.5"/><rect x="17" y="14" width="5" height="7" rx="1.5"/></svg>
+        <div class="label">Audio</div>
+      </div>
+    </a>
+
+    <a href="#" class="tile s1x1 bg-steel" aria-label="Sobre mí">
+      <div class="face front">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        <div class="label">Sobre mí</div>
+      </div>
+    </a>
+
+    <a href="mailto:tu-correo@ejemplo.com" class="tile s2x1 bg-crimson" aria-label="Contacto">
+      <div class="face front">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="1.5"/><path d="M2 6.5l10 7 10-7"/></svg>
+        <div class="label">Contacto</div>
+      </div>
+    </a>
+
+    <a href="https://github.com/" class="tile s1x1 bg-green" aria-label="GitHub">
+      <div class="face front">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.1.39-2 1.03-2.7-.1-.25-.45-1.26.1-2.62 0 0 .84-.27 2.75 1.03a9.6 9.6 0 0 1 5 0c1.91-1.3 2.75-1.03 2.75-1.03.55 1.36.2 2.37.1 2.62.64.7 1.03 1.6 1.03 2.7 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85v2.74c0 .26.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+        <div class="label">GitHub</div>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<footer>desliza para ver más →</footer>
+
+<script>
+  function tick(){
+    var now = new Date();
+    var t = now.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+    var d = now.toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'});
+    document.getElementById('clock-time').textContent = t;
+    document.getElementById('clock-date').textContent = d;
+  }
+  tick();
+  setInterval(tick, 15000);
+</script>
+
+</body>
+</html>
