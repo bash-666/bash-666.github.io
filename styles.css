@@ -64,7 +64,6 @@ body{
   backdrop-filter:blur(14px) saturate(140%);
   border:1px solid var(--glass-line);
   border-radius:6px;
-  will-change:backdrop-filter;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.75),
     inset 0 -1px 0 rgba(255,255,255,0.15),
@@ -811,4 +810,62 @@ header{
   header{ margin:14px 0 12px; padding:14px 16px; }
   .taskbar .links{ display:none; }
   .menu-btn{ display:flex; }
+}
+
+/* ============================================
+   RENDIMIENTO EN MÓVIL
+   Optimizado para Firefox Android y navegadores
+   sin aceleración GPU para backdrop-filter.
+   ============================================ */
+@media (max-width: 768px){
+  /* 1. Sin blur: principal causa de lag en scroll */
+  .glass,
+  .taskbar,
+  .nav-sheet {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .glass {
+    background: rgba(30,70,120,0.9);
+  }
+  body.dark-mode .glass {
+    background: rgba(15,30,50,0.92);
+  }
+  .taskbar {
+    background: rgba(10,25,50,0.96);
+  }
+  body.dark-mode .taskbar {
+    background: rgba(3,8,16,0.97);
+  }
+  .nav-sheet {
+    background: rgba(20,45,80,0.97);
+  }
+
+  /* 2. Sin fondo fijo: evita repintar el gradiente al hacer scroll */
+  body {
+    background-attachment: scroll;
+  }
+
+  /* 3. Sin animación de entrada de tiles */
+  .tile.tile-animate {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* 4. Sin shimmer animado: fondo plano mientras carga */
+  .carousel-frame.loading::before {
+    animation: none;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* 5. Sin transición de fondo del body (el cambio de tema no se anima en móvil) */
+  html, body {
+    transition: none;
+  }
+}
+
+/* Quitar will-change global: solo consumía memoria sin beneficio real */
+.glass {
+  will-change: auto;
 }
