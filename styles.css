@@ -217,7 +217,7 @@ header{
   background-size:200px 200px;
   pointer-events:none;
   z-index:0;
-  mix-blend-mode:overlay;
+  opacity:0.5;
 }
 .tile.has-thumb{ background-size:cover; background-position:center; }
 .tile.has-thumb::before{
