@@ -52,6 +52,8 @@ function cleanBodyText(text){
   return text;
 }
 
+/* Fecha: "hoy/ayer/hace N días" para los últimos 6 días,
+   luego formato ISO YYYY-MM-DD para el resto. */
 function relativeDate(dateStr){
   const d = new Date(dateStr + 'T00:00:00');
   const today = new Date(); today.setHours(0,0,0,0);
@@ -59,7 +61,21 @@ function relativeDate(dateStr){
   if(diffDays === 0) return 'hoy';
   if(diffDays === 1) return 'ayer';
   if(diffDays > 1 && diffDays <= 6) return `hace ${diffDays} días`;
-  return d.toLocaleDateString('es-MX', { day:'numeric', month:'short' });
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+/* Numeración de entradas: asigna "Nº 0001", "Nº 0002"... según orden
+   cronológico ascendente. Se calcula una vez por entrada y se guarda
+   en el objeto para no recalcularlo en cada render. */
+function computeEntryNumbers(){
+  const visible = POSTS.filter(p => !p.hidden);
+  const sortedAsc = visible.slice().sort((a,b) => new Date(a.date) - new Date(b.date));
+  sortedAsc.forEach((p, i) => {
+    p._entryNumber = String(i + 1).padStart(4, '0');
+  });
 }
 
 function toast(msg){
@@ -297,6 +313,7 @@ function appendTile(p, animIdx, isWide, list){
   const postDate = new Date(p.date + 'T00:00:00');
   const isNew = Math.round((today - postDate) / 86400000) <= 7;
   const dateStr = relativeDate(p.date);
+  const numberStr = p._entryNumber || '';
 
   const tile = document.createElement('div');
   tile.className = 'tile' + (isWide ? ' wide' : '') + (thumb ? ' has-thumb' : '');
@@ -313,6 +330,7 @@ function appendTile(p, animIdx, isWide, list){
   tile.innerHTML = `
     ${isNew ? '<div class="badge-new">NUEVO</div>' : ''}
     ${isWide ? '<div class="tile-wide-star">★ DESTACADO</div>' : ''}
+    ${numberStr ? `<div class="tile-number">Nº ${numberStr}</div>` : ''}
     ${label ? `<div class="tile-cat">${escapeHtml(label)}</div>` : ''}
     <div class="tile-title">${escapeHtml(p.title)}</div>
     <div class="tile-date">${dateStr}</div>
@@ -662,6 +680,7 @@ themeBtn.addEventListener('click', () => {
     .forEach(m => m.content = full);
 })();
 
+computeEntryNumbers();
 pickFeatured();
 renderCatButtons();
 renderDeviceButtons();
