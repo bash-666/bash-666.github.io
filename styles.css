@@ -293,10 +293,20 @@ header{
   left:auto;
   right:8px;
 }
-.tile-wide-star ~ .tile-number{
-  /* en el tile destacado el badge está arriba-izq, mover el número */
+/* En el tile destacado, el número va abajo-derecha para no chocar con
+   ni con "★ DESTACADO" (arriba-derecha) ni con "NUEVO" (arriba-izquierda) */
+.tile.wide .tile-number{
+  top:auto;
+  bottom:8px;
   left:auto;
   right:8px;
+}
+/* En el destacado, badge NUEVO un poco más prominente */
+.tile.wide .badge-new{
+  top:12px;
+  left:12px;
+  font-size:0.65rem;
+  padding:3px 8px;
 }
 
 .device-row{
@@ -498,7 +508,8 @@ header{
   -webkit-box-orient:vertical;
   overflow:hidden;
 }
-.tile.wide .tile-title{ font-size:1.35rem; -webkit-line-clamp:2; }
+/* #8: destacado con título más grande */
+.tile.wide .tile-title{ font-size:1.75rem; -webkit-line-clamp:2; }
 .tile .tile-date{
   font-size:0.62rem;
   opacity:0.75;
@@ -609,7 +620,19 @@ header{
   font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;
   opacity:0.85; margin-bottom:6px;
 }
-.detail-meta{ font-size:0.8rem; opacity:0.85; margin-bottom:28px; }
+/* #5: fecha del detalle como etiqueta monoespaciada */
+.detail-meta{
+  font-family:'Courier New', 'Consolas', monospace;
+  font-size:0.75rem;
+  letter-spacing:0.05em;
+  opacity:0.92;
+  text-transform:uppercase;
+  margin-bottom:28px;
+  padding:6px 10px;
+  background:rgba(0,0,0,0.22);
+  border-radius:3px;
+  display:inline-block;
+}
 .detail-meta .sep{ margin:0 6px; opacity:0.6; }
 .detail-summary{ font-size:1.05rem; opacity:0.95; margin-bottom:26px; max-width:60ch; }
 .detail-body p{ font-size:0.95rem; line-height:1.7; opacity:0.9; margin:0 0 16px; max-width:62ch; white-space:pre-wrap; }
@@ -737,21 +760,24 @@ header{
 }
 .taskbar .links a:hover, .taskbar .links a:focus-visible{ color:#fff; }
 .taskbar .clock{ text-align:right; flex-shrink:0; line-height:1.15; }
+/* #7: reloj más técnico */
 .taskbar .clock .time{
+  font-family:'Courier New', 'Consolas', monospace;
   font-size:0.85rem;
-  font-weight:600;
+  font-weight:700;
   color:#fff;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
-  letter-spacing:0.3px;
+  letter-spacing:0.5px;
   transition: opacity .15s ease;
 }
 .taskbar .clock .time .sep{ color:var(--cobalt); }
 .taskbar .clock .date{
+  font-family:'Courier New', 'Consolas', monospace;
   font-size:0.62rem;
   color:var(--ink-dim);
-  text-transform:capitalize;
-  letter-spacing:0.2px;
+  text-transform:none;
+  letter-spacing:0.4px;
 }
 
 .dl-btn{
