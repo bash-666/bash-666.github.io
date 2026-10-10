@@ -706,8 +706,11 @@ function tick(){
       clockTimeEl.innerHTML = `${hh}<span class="sep">:</span>${mm}`;
       clockTimeEl.style.opacity = '1';
     }, 120);
-    clockDateEl.textContent =
-      now.toLocaleDateString('es-MX', { weekday:'short', day:'numeric', month:'short', timeZone: tz });
+    /* #7: fecha en formato ISO YYYY-MM-DD */
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    clockDateEl.textContent = `${y}-${m}-${day}`;
   }
 }
 
