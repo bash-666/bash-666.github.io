@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>A.P.T vlog</title>
+<meta name="description" content="Bitácora personal de hallazgos, mods, guías y firmware.">
+<meta property="og:title" content="A.P.T vlog">
+<meta property="og:description" content="Bitácora personal de hallazgos, mods, guías y firmware.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bash-666.github.io/">
+<meta property="og:image" content="https://bash-666.github.io/img/og-cover.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://bash-666.github.io/img/og-cover.webp">
+
+<script data-goatcounter="https://aptvlog.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+<!-- =========================================================
+     DATOS — EDITÁ SOLO ESTE BLOQUE.
+     Para publicar algo nuevo, agrega un objeto a ENTRADAS.
+     Campos: id (único), titulo, categoria ("juegos", "mods",
+     "guias", "herramientas" o ""), fecha (AAAA-MM-DD), dispositivo,
+     resumen, cuerpo (párrafos; si empieza con "!" es una nota),
+     imagenes ([{src, pie}]) y oculta (true = no aparece en el listado).
+     ========================================================= -->
+<script>
+const CATEGORIAS = [
+    { id: "juegos",       nombre: "Juegos",       color: "#0050ef" },
+    { id: "mods",         nombre: "Mods",         color: "#2f7d32" },
+    { id: "guias",        nombre: "Guías",        color: "#1b7fb0" },
+    { id: "herramientas", nombre: "Herramientas", color: "#b5482a" }
+  ];
+
+  const ENTRADAS = [
+    {
+      id: "45a71c92-53dc-49aa-8afa-238917863263",
+      titulo: "Mejores texturas para personajes de GTA VC",
+      categoria: "mods",
+      fecha: "2026-08-12",
+      dispositivo: "Android",
+      resumen: "Mod donde se mejoran texturas de los personajes del juego.",
+      cuerpo: [
+        "Algo no muy notorio dentro de GTA VC es que hay 2 modelos de cada personaje, uno para cinemáticas y otro para cuando están en el gameplay.",
+        "En esencia ambos modelos son el mismo, el asunto es que las texturas al ser las mismas, cuando están dentro del gameplay no tienen animaciones en el rostro y los ojos se quedan totalmente cerrados.",
+        "ENLACE DEL MOD: https://www.mediafire.com/file/6l5rr5ntax5ilcz/ingame+fixes+v2.7z/file"
+      ],
+      imagenes: [
+        { src: "img/ig-fix1.webp", pie: "" },
+        { src: "img/ig-fix2.webp", pie: "" }
+      ]
+    },
+    {
+      id: "832e53b0-fdc0-4fed-8c77-854b6cf96582",
+      titulo: "Txd Tool para Android",
+      categoria: "herramientas",
+      fecha: "2026-08-12",
+      dispositivo: "Android",
+      resumen: "Herramienta vital para modding básico.",
+      cuerpo: [
+        "TXD TOOL es una herramienta básica y de gran importancia para realizar modificaciones a los distintos archivos de texturas de los juegos GTA VC y GTA SA, con esta se pueden extraer y reemplazar las ya mencionadas texturas, así como agregar nuevas.",
+        "ENLACE DE LA HERRAMIENTA: https://www.mediafire.com/file/gvl0qpnkxvlgk77/ttool.apk/file"
+      ],
+      imagenes: [
+        { src: "img/txd.webp", pie: "" }
+      ]
+    },
+    {
+      id: "199ad066-6fc1-493b-85b3-9904635801ad",
+      titulo: "Resident Evil Degeneration para Android",
+      categoria: "juegos",
+      fecha: "2026-08-13",
+      dispositivo: "Android",
+      resumen: "Ajustes a un juego perdido por 15 años.",
+      cuerpo: [
+        "Resident Evil: Degeneration para Android no es un lanzamiento que mucha gente conozca. Capcom lo metió preinstalado únicamente en dos teléfonos exclusivos de Japón, los Sharp Galapagos 003SH y 005SH, allá por 2010. Cuando esa línea de teléfonos murió, el juego se fue con ella. Nunca se relanzó en ninguna otra plataforma.",
+        "La comunidad de preservación logró recuperar el archivo hace poco (crédito a G00dGamE por el hallazgo y primer arreglo), pero solo corría en Android 2.2 a 4.4, o dentro de máquinas virtuales.",
+        "Al APK le renombré la carpeta de librerías nativas de armeabi a armeabi-v7a, que es lo que le indica al sistema qué arquitectura de procesador puede leer esos archivos y subí el SDK mínimo. Con eso dejó de bloquearse en Android moderno. Después ajusté el app.icf para resolver un problema de escalado en pantalla completa.",
+        "Resultado: corriendo limpio en Android 14, sin root y sin necesidad de máquina virtual.",
+        "!En las opciones de configuración deben apagar el efecto 3D o no podrán ver el juego correctamente.",
+        "ENLACE DEL JUEGO: https://www.mediafire.com/file/1tttj9ygcpcv731/RE+Degeneration+(Android+¿-14).apk/file"
+      ],
+      imagenes: [
+        { src: "img/rede.webp", pie: "" },
+        { src: "img/rede2.webp", pie: "" }
+      ]
+    },
+    {
+      id: "519c049d-cd3e-4e82-94bc-9d585aebab99",
+      titulo: "Mejores texturas Tommy Vercetti",
+      categoria: "mods",
+      fecha: "2026-08-20",
+      dispositivo: "Android",
+      resumen: "Mod donde se mejoran las texturas del juego y cinemáticas del protagonista.",
+      cuerpo: [
+        "Una pequeña modificación para el protagonista de GTA VC, en esta se respetan la esencia al igual que la distribución de las texturas originales, solo se trata de hacer que no luzcan tan pixeladas como las del juego original.",
+        "Las texturas tienen una resolución de 1024 x 1024, TODAS las apariencias del personaje tienen una nueva textura, las in-game y las de cinemáticas.",
+        "!Necesitarás TXD TOOL",
+        "ENLACE DEL MOD: https://www.mediafire.com/file/50h4fq6022cgl7f/NUEVAS_TEXTURAS.7z/file"
+      ],
+      imagenes: [
+        { src: "img/tom1.webp", pie: "Antes" },
+        { src: "img/tom2.webp", pie: "Después" }
+      ]
+    },
+    {
+      id: "66af5d81-2c8b-4b1f-bc58-a42aa03c6f12",
+      titulo: "Cleo mod GTA LCS Android 7 en adelante",
+      categoria: "mods",
+      fecha: "2026-09-07",
+      dispositivo: "Android",
+      resumen: "APK editado por mí.",
+      cuerpo: [
+        "En esta nueva entrada les comparto una APK para el GTA LCS de Android, este APK ya viene con el cleo mod, una partida completa al 100% y el Fastaman Limiter Adjuster.",
+        "El juego se disfruta con total normalidad y con el agregado de los cleo mods lo vuelve mucho más divertido y rejugable.",
+        "!No estoy seguro de que el juego funcione arriba de Android 13",
+        "Enlace del APK: https://www.mediafire.com/download/1pclgcym0p2b2ep",
+        "Enlace de los cleo mods: https://www.mediafire.com/download/p7icqnolfvq1gf0"
+      ],
+      imagenes: [
+        { src: "img/gtalcs.webp", pie: "" },
+        { src: "img/gtalcs2.webp", pie: "" }
+      ]
+    },
+    {
+      id: "sobre-mi",
+      oculta: true,
+      titulo: "Sobre mí",
+      categoria: "",
+      fecha: "2026-08-09",
+      dispositivo: "",
+      resumen: "Un poco sobre este sitio y quién lo escribe.",
+      cuerpo: [
+        "Soy alguien con mucho tiempo libre. En esos momentos hago cosas como estas; a veces también hago vídeos."
+      ],
+      imagenes: []
+    }
+  ];
+
+  const ENLACES = [
+    { texto: "Sobre mí", href: "#entrada-sobre-mi" },
+    { texto: "Contacto", href: "mailto:tu-correo@ejemplo.com" },
+    { texto: "GitHub", href: "https://github.com/bash-666" }
+  ];
+  /* === FIN DATOS === */
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="appbar">
+  <div class="wrap">
+    <div class="fila">
+      <a class="marca" href="#" data-inicio aria-label="Ir al inicio">
+        <span class="marca-txt">
+          <b>A.P.T</b><i>vlog</i>
+        </span>
+        <small class="tag">Bitácora de hallazgos</small>
+      </a>
+      <button type="button" class="icono-btn" id="btn-menu" aria-label="Abrir menú" aria-controls="menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <line x1="4" y1="7" x2="20" y2="7"/>
+          <line x1="4" y1="12" x2="20" y2="12"/>
+          <line x1="4" y1="17" x2="20" y2="17"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-fondo" id="menu-fondo" hidden></div>
+<aside class="menu" id="menu" aria-label="Menú del sitio" aria-hidden="true">
+  <div class="menu-cab">
+    <strong>Menú</strong>
+    <button type="button" id="btn-cerrar-menu" aria-label="Cerrar menú">✕</button>
+  </div>
+  <nav id="menu-enlaces"></nav>
+  <nav style="padding-top:0">
+    <p class="sep-etiqueta" style="margin:0 2px">Apariencia</p>
+    <button type="button" class="fila-op" id="btn-tema" role="switch" aria-checked="false">
+      <span>Modo oscuro</span>
+      <span class="interruptor" aria-hidden="true"></span>
+    </button>
+  </nav>
+</aside>
+
+<main class="wrap">
+  <section id="vista-lista">
+    <div class="filtros">
+      <div class="tabs" id="tabs" role="tablist" aria-label="Categorías"></div>
+      <div class="herramientas">
+        <div class="buscar">
+          <input id="buscar" type="search" placeholder="Buscar en las entradas…" autocomplete="off" aria-label="Buscar entradas">
+        </div>
+        <select id="dispositivo" class="control" aria-label="Filtrar por equipo"></select>
+        <select id="orden" class="control" aria-label="Ordenar">
+          <option value="reciente">Más recientes</option>
+          <option value="antigua">Más antiguas</option>
+        </select>
+        <button type="button" class="limpiar" id="limpiar" hidden>Quitar filtros</button>
+      </div>
+    </div>
+    <div id="destacada" style="margin-top:18px"></div>
+    <div class="rejilla" id="rejilla"></div>
+    <nav class="pag" id="paginador" aria-label="Paginación" hidden></nav>
+    <p class="vacio" id="vacio" hidden>No hay entradas con estos filtros.</p>
+  </section>
+
+  <article id="vista-entrada" hidden></article>
+</main>
+
+<footer>
+  <p>Bitácora personal de hallazgos, mods, guías y firmware.</p>
+</footer>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
