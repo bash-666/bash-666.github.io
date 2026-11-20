@@ -12,6 +12,7 @@
     --bg-grad: linear-gradient(180deg, #4E9BD6 0%, #2C6FB0 30%, #164F8E 60%, #0B2E5C 100%);
   }
   *{ box-sizing:border-box; }
+  [hidden]{ display:none !important; }
   html,body{ margin:0; min-height:100%; color:var(--ink);
     font-family:'Segoe UI', Tahoma, Roboto, 'Helvetica Neue', Arial, sans-serif; }
   body{ background: var(--bg-grad); background-attachment:fixed; padding:24px 16px 48px; }
@@ -112,7 +113,7 @@
   </footer>
 </div>
 
-<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 (function(){
@@ -244,7 +245,7 @@
   function ensureFFmpeg(){
     if (ffmpegReady) return Promise.resolve();
     engineEl.textContent = "Cargando el motor de compresión (la primera vez puede tardar unos segundos)…";
-    ffmpeg = FFmpeg.createFFmpeg({ log: false });
+    ffmpeg = FFmpeg.createFFmpeg({ log: false, corePath: "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js" });
     return ffmpeg.load().then(function(){
       ffmpegReady = true;
       engineEl.textContent = "Motor listo.";
@@ -256,7 +257,8 @@
     busy = true;
     runBtn.disabled = true; clearBtn.disabled = true;
     ensureFFmpeg().then(processQueue).catch(function(err){
-      engineEl.textContent = "No se pudo cargar el motor. Revisa tu conexión e inténtalo de nuevo.";
+      var msg = (err && err.message) ? err.message : String(err);
+      engineEl.textContent = "No se pudo cargar el motor: " + msg + " — Revisa tu conexión e inténtalo de nuevo.";
       busy = false; render();
     });
   });
