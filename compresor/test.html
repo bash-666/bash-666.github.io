@@ -34,7 +34,7 @@ try {
   const ffmpeg = new FFmpeg();
   ffmpeg.on("log", (d) => log("ffmpeg log: " + d.message));
   await ffmpeg.load({
-    classWorkerURL: "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/worker.js",
+    classWorkerURL: new URL("worker.js", location.href).href,
     coreURL, wasmURL
   });
   log("paso 4: LOAD OK, loaded=" + ffmpeg.loaded);

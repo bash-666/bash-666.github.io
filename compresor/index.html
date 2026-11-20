@@ -136,7 +136,7 @@ import { toBlobURL } from "@ffmpeg/util";
     wav:  { alta:["-c:a","pcm_s16le"], media:["-c:a","pcm_s16le"], baja:["-c:a","pcm_s16le"] }
   };
   var CORE_BASE = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm";
-  var WORKER_URL = "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/worker.js";
+  var WORKER_URL = new URL("worker.js", location.href).href;
 
   var queue = [];
   var nextId = 1;
