@@ -113,9 +113,19 @@
   </footer>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script>
+<script type="importmap">
+{
+  "imports": {
+    "@ffmpeg/ffmpeg": "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/+esm",
+    "@ffmpeg/util": "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/+esm"
+  }
+}
+</script>
+<script type="module">
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { toBlobURL } from "@ffmpeg/util";
+
 (function(){
   "use strict";
   var MIME = { mp3:"audio/mpeg", ogg:"audio/ogg", opus:"audio/ogg", wav:"audio/wav" };
@@ -125,6 +135,8 @@
     opus: { alta:["-c:a","libopus","-b:a","192k"],      media:["-c:a","libopus","-b:a","128k"],      baja:["-c:a","libopus","-b:a","96k"] },
     wav:  { alta:["-c:a","pcm_s16le"], media:["-c:a","pcm_s16le"], baja:["-c:a","pcm_s16le"] }
   };
+  var CORE_BASE = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm";
+  var WORKER_URL = "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/worker.js";
 
   var queue = [];
   var nextId = 1;
@@ -245,8 +257,17 @@
   function ensureFFmpeg(){
     if (ffmpegReady) return Promise.resolve();
     engineEl.textContent = "Cargando el motor de compresión (la primera vez puede tardar unos segundos)…";
-    ffmpeg = FFmpeg.createFFmpeg({ log: false, corePath: "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js" });
-    return ffmpeg.load().then(function(){
+    ffmpeg = new FFmpeg();
+    return Promise.all([
+      toBlobURL(CORE_BASE + "/ffmpeg-core.js", "text/javascript"),
+      toBlobURL(CORE_BASE + "/ffmpeg-core.wasm", "application/wasm")
+    ]).then(function(urls){
+      return ffmpeg.load({
+        classWorkerURL: WORKER_URL,
+        coreURL: urls[0],
+        wasmURL: urls[1]
+      });
+    }).then(function(){
       ffmpegReady = true;
       engineEl.textContent = "Motor listo.";
     });
@@ -280,29 +301,37 @@
     it.status = "working"; it.progress = 0; render();
     var inName = "input_" + it.id + "." + extOf(it.file.name);
     var tmpOut = "output_" + it.id + "." + formatSel.value;
+    var onProgress = function(p){
+      var r = p && p.progress;
+      if (typeof r === "number" && isFinite(r)) {
+        it.progress = Math.max(0, Math.min(1, r));
+        render();
+      }
+    };
+    ffmpeg.on("progress", onProgress);
     return it.file.arrayBuffer().then(function(buf){
-      ffmpeg.FS("writeFile", inName, new Uint8Array(buf));
-      ffmpeg.setProgress(function(p){
-        var r = p && p.ratio;
-        if (typeof r === "number" && isFinite(r)) {
-          it.progress = Math.max(0, Math.min(1, r));
-          render();
-        }
-      });
-      var args = ["-i", inName].concat(QUALITY[formatSel.value][qualitySel.value], [tmpOut]);
-      return ffmpeg.run.apply(ffmpeg, args);
+      return ffmpeg.writeFile(inName, new Uint8Array(buf));
     }).then(function(){
-      var data = ffmpeg.FS("readFile", tmpOut);
+      var args = ["-i", inName].concat(QUALITY[formatSel.value][qualitySel.value], [tmpOut]);
+      return ffmpeg.exec(args);
+    }).then(function(code){
+      ffmpeg.off("progress", onProgress);
+      if (code !== 0) throw new Error("ffmpeg terminó con código " + code);
+      return ffmpeg.readFile(tmpOut);
+    }).then(function(data){
       it.output = data;
       it.outName = outNameFor(it);
       it.done = true; it.status = "done"; it.progress = 1;
-      try { ffmpeg.FS("unlink", inName); } catch(e){}
-      try { ffmpeg.FS("unlink", tmpOut); } catch(e){}
+      return ffmpeg.deleteFile(inName).catch(function(){}).then(function(){
+        return ffmpeg.deleteFile(tmpOut).catch(function(){});
+      });
+    }).then(function(){
       render();
     }).catch(function(err){
+      ffmpeg.off("progress", onProgress);
       it.status = "error";
       it.error = (err && err.message) ? err.message : "no se pudo comprimir";
-      try { ffmpeg.FS("unlink", inName); } catch(e){}
+      ffmpeg.deleteFile(inName).catch(function(){});
       render();
     });
   }
